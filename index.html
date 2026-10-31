@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101b1b">
+<meta name="description" content="Clean messy CSV files locally. Trim cells, remove blank rows and duplicates, preview changes, and export a clean CSV.">
+<title>CSV Cleanroom — Day 04</title>
+<style>
+:root{color-scheme:dark;--bg:#101817;--panel:#172220;--line:#2b3a36;--muted:#a0b0aa;--text:#f0f5f1;--accent:#67e0b1;--danger:#ffae9f}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 12% 0%,#19332b 0,transparent 34%),var(--bg);color:var(--text);font:15px/1.5 Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}.wrap{max-width:1120px;margin:auto;padding:24px}.nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:56px}.brand{font-weight:800;letter-spacing:-.04em}.brand i{font-style:normal;color:var(--accent)}.day{font-size:12px;color:var(--muted);letter-spacing:.12em}.hero{max-width:760px;margin:0 auto 30px;text-align:center}.eyebrow{color:var(--accent);font-weight:750;font-size:11px;letter-spacing:.2em}.hero h1{font-size:clamp(38px,7vw,68px);line-height:1.02;letter-spacing:-.065em;margin:14px 0}.hero p{color:#bdcbc5;font-size:17px;margin:0 auto;max-width:620px}.privacy{display:inline-flex;gap:8px;align-items:center;color:#b5c8bf;font-size:12px;margin-top:18px}.dot{width:7px;height:7px;background:var(--accent);border-radius:50%;box-shadow:0 0 12px var(--accent)}.app{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:16px;align-items:start}.card{background:linear-gradient(145deg,#192522,#151e1c);border:1px solid var(--line);border-radius:16px;padding:22px;box-shadow:0 22px 65px #0002}.card h2{font-size:15px;margin:0 0 14px;letter-spacing:-.02em}.label{display:block;font-size:12px;font-weight:700;color:#d2ddd7;margin:0 0 7px}textarea,input[type=file],select{width:100%;color:var(--text);background:#0f1715;border:1px solid #394a44;border-radius:9px;padding:11px;outline:none}textarea:focus,select:focus{border-color:var(--accent);box-shadow:0 0 0 3px #67e0b122}textarea{height:220px;resize:vertical;font:12px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace}.file{margin:12px 0 16px}.file input{font-size:12px}.settings{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:15px 0}.toggle{display:flex;gap:9px;align-items:center;color:#d2ddd7;font-size:12px}.toggle input{accent-color:#35c997;width:16px;height:16px}.actions{display:flex;gap:9px;flex-wrap:wrap}.btn{border-radius:9px;padding:10px 14px;border:1px solid #40534b;background:#202d29;color:var(--text);font-weight:750;font-size:12px}.btn:hover{border-color:var(--accent)}.primary{background:var(--accent);color:#08251a;border-color:var(--accent)}.primary:hover{background:#8aefc8}.btn:disabled{opacity:.45;cursor:not-allowed}.note{font-size:11px;color:var(--muted);margin:12px 0 0}.status{min-height:22px;margin:12px 0 0;color:#bdd2c8;font-size:12px}.status.error{color:var(--danger)}.previewHead{display:flex;justify-content:space-between;align-items:start;gap:12px}.badge{font:11px ui-monospace,monospace;color:#c3d2cb;background:#0d1513;border:1px solid var(--line);padding:6px 8px;border-radius:7px;white-space:nowrap}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 15px}.stat{padding:10px;border:1px solid var(--line);background:#111a18;border-radius:9px}.stat b{display:block;font-size:19px;letter-spacing:-.04em}.stat span{font-size:10px;color:var(--muted)}.tableWrap{overflow:auto;max-height:380px;border:1px solid var(--line);border-radius:9px}table{border-collapse:collapse;width:100%;font-size:11px}th,td{padding:9px 10px;border-bottom:1px solid #293832;text-align:left;max-width:230px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}th{position:sticky;top:0;background:#202d29;color:#d6e5dd;font-weight:700}td{color:#c1d0c8}tr:last-child td{border-bottom:0}.empty{color:var(--muted);text-align:center;padding:44px 15px;font-size:13px}.foot{display:flex;justify-content:space-between;gap:16px;margin:14px 2px 0;color:#91a39a;font-size:10px}.foot a{color:#b7c9c0;text-decoration:none}.foot a:hover{color:var(--accent)}@media(max-width:780px){.wrap{padding:17px}.nav{margin-bottom:40px}.app{grid-template-columns:1fr}.hero{margin-bottom:22px}.tableWrap{max-height:320px}}@media(max-width:420px){.card{padding:16px}.settings{grid-template-columns:1fr}.stats{gap:5px}.stat{padding:8px}.stat b{font-size:16px}.foot{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header class="nav"><div class="brand">CSV <i>Cleanroom</i></div><div class="day">DAY 04 / BROWSER TOOL</div></header>
+<section class="hero"><div class="eyebrow">A SMALL FIX FOR MESSY SPREADSHEETS</div><h1>Clean your CSV.<br>Keep it yours.</h1><p>Trim stray spaces, clear blank rows, and drop duplicate records. Preview every change before exporting.</p><div class="privacy"><span class="dot"></span> Runs locally in your browser. Your file is never uploaded.</div></section>
+<main class="app">
+<section class="card">
+<h2>1. Add your CSV data</h2>
+<label class="label" for="source">Paste CSV text</label>
+<textarea id="source" spellcheck="false" aria-describedby="privacy-note" placeholder="name,email,city&#10; Ava ,ava@example.com,London"></textarea>
+<div class="file"><label class="label" for="file">Or choose a CSV / TSV file</label><input id="file" type="file" accept=".csv,.tsv,text/csv,text/tab-separated-values"></div>
+<div class="settings">
+<div><label class="label" for="delimiter">Separator</label><select id="delimiter"><option value="auto">Detect automatically</option><option value=",">Comma</option><option value=";">Semicolon</option><option value="	">Tab</option></select></div>
+<div aria-hidden="true"></div>
+<label class="toggle"><input id="trim" type="checkbox" checked> Trim cell spaces</label>
+<label class="toggle"><input id="blank" type="checkbox" checked> Remove blank rows</label>
+<label class="toggle"><input id="duplicates" type="checkbox" checked> Remove duplicate rows</label>
+</div>
+<div class="actions"><button id="load" class="btn primary" type="button">Load and clean</button><button id="sample" class="btn" type="button">Try sample</button><button id="clear" class="btn" type="button">Clear</button></div>
+<p id="privacy-note" class="note">The first row is treated as a header. Cleaning rules can be changed after loading.</p>
+<p id="status" class="status" role="status" aria-live="polite"></p>
+</section>
+<section class="card">
+<div class="previewHead"><div><h2>2. Review the result</h2><div id="delimiterBadge" class="badge">No data loaded</div></div><button id="download" class="btn primary" type="button" disabled>Download cleaned CSV</button></div>
+<div class="stats"><div class="stat"><b id="statRows">—</b><span>DATA ROWS</span></div><div class="stat"><b id="statRemoved">—</b><span>ROWS REMOVED</span></div><div class="stat"><b id="statColumns">—</b><span>COLUMNS</span></div></div>
+<div id="tableWrap" class="tableWrap"><div class="empty">Paste some CSV or open a local file, then select <b>Load and clean</b>.</div></div>
+<div class="foot"><span id="previewCount">Preview shows up to 100 rows.</span><a href="https://github.com/mhussain-codes/day-04-csv-cleanroom">Open source on GitHub ↗</a></div>
+</section>
+</main>
+</div>
+<script>
+(function(){
+"use strict";
+var $=function(id){return document.getElementById(id);};
+var parsed=null,cleaned=null,sepUsed=",",delimiterNames={",":"comma",";":"semicolon","\t":"tab"};
+var sample="name,email,city\n Ava ,ava@example.com,London\nSam,sam@example.com,Paris\nAva,ava@example.com,London\n , , \nMina,mina@example.com,\"New York, NY\"";
+function parseCSV(text,sep){
+ var rows=[],row=[],field="",quoted=false,afterQuote=false;
+ for(var i=0;i<text.length;i++){
+  var ch=text[i];
+  if(quoted){
+   if(ch==='"'&&text[i+1]==='"'){field+='"';i++;}
+   else if(ch==='"'){quoted=false;afterQuote=true;}
+   else field+=ch;
+   continue;
+  }
+  if(afterQuote){
+   if(ch===sep){row.push(field);field="";afterQuote=false;continue;}
+   if(ch==="\n"||ch==="\r"){row.push(field);rows.push(row);row=[];field="";afterQuote=false;if(ch==="\r"&&text[i+1]==="\n")i++;continue;}
+   if(ch===" "||ch==="\t")continue;
+   throw new Error("Unexpected character after a closing quote near character "+(i+1)+".");
+  }
+  if(ch==='"'&&field===""){quoted=true;continue;}
+  if(ch===sep){row.push(field);field="";continue;}
+  if(ch==="\n"||ch==="\r"){row.push(field);rows.push(row);row=[];field="";if(ch==="\r"&&text[i+1]==="\n")i++;continue;}
+  field+=ch;
+ }
+ if(quoted)throw new Error("A quoted field was not closed. Check the CSV around the end of the file.");
+ if(field!==""||row.length||afterQuote){row.push(field);rows.push(row);}
+ if(rows.length&&rows[0][0])rows[0][0]=rows[0][0].replace(/^\uFEFF/,"");
+ return rows;
+}
+function countSeparator(line,sep){var q=false,n=0;for(var i=0;i<line.length;i++){if(line[i]==='"'){if(q&&line[i+1]==='"')i++;else q=!q;}else if(!q&&line[i]===sep)n++;}return n;}
+function detectSeparator(text){
+ var lines=text.split(/\r\n|\n|\r/).filter(function(x){return x.trim()!=="";}).slice(0,12);
+ var options=[",","\t",";"],best=",",bestScore=-1;
+ options.forEach(function(sep){var counts=lines.map(function(line){return countSeparator(line,sep);}),nonzero=counts.filter(function(n){return n>0;});if(!nonzero.length)return;var common=nonzero.reduce(function(a,b){return a+b;},0)/nonzero.length;var consistency=nonzero.filter(function(n){return n===Math.round(common);}).length/nonzero.length;var score=common*consistency;if(score>bestScore){bestScore=score;best=sep;}});
+ return best;
+}
+function sameRow(a,b){return a.length===b.length&&a.every(function(v,i){return v===b[i];});}
+function transform(){
+ if(!parsed)return;
+ var trim=$("trim").checked,dropBlank=$("blank").checked,dropDup=$("duplicates").checked;
+ var normalized=parsed.map(function(row){return row.map(function(value){return trim?value.trim():value;});});
+ var header=normalized.length?normalized[0]:[],data=normalized.slice(1),kept=[],removedBlank=0,removedDuplicates=0,seen=new Set();
+ data.forEach(function(row){
+  var blank=row.every(function(value){return value==="";});
+  if(dropBlank&&blank){removedBlank++;return;}
+  var key=JSON.stringify(row);
+  if(dropDup&&seen.has(key)){removedDuplicates++;return;}
+  seen.add(key);kept.push(row);
+ });
+ cleaned={header:header,rows:kept,removedBlank:removedBlank,removedDuplicates:removedDuplicates};
+ render();
+}
+function escapeCSV(value,sep){var s=String(value);if(s.indexOf('"')>=0||s.indexOf("\n")>=0||s.indexOf("\r")>=0||s.indexOf(sep)>=0)return '"'+s.replace(/"/g,'""')+'"';return s;}
+function exportCSV(){
+ if(!cleaned)return;
+ var rows=[cleaned.header].concat(cleaned.rows),body=rows.map(function(row){return row.map(function(cell){return escapeCSV(cell,sepUsed);}).join(sepUsed);}).join("\r\n");
+ var blob=new Blob(["\uFEFF"+body],{type:"text/csv;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");
+ a.href=url;a.download="cleaned-data.csv";document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url);},1000);
+}
+function render(){
+ if(!cleaned)return;
+ var total=parsed.length?Math.max(0,parsed.length-1):0;
+ $("statRows").textContent=String(cleaned.rows.length);
+ $("statRemoved").textContent=String(cleaned.removedBlank+cleaned.removedDuplicates);
+ $("statColumns").textContent=String(cleaned.header.length);
+ $("delimiterBadge").textContent="Separator: "+(delimiterNames[sepUsed]||"comma");
+ $("download").disabled=false;
+ var wrap=$("tableWrap"),table=document.createElement("table"),thead=document.createElement("thead"),tr=document.createElement("tr");
+ cleaned.header.forEach(function(name,index){var th=document.createElement("th");th.textContent=name||("Column "+(index+1));th.title=name||("Column "+(index+1));tr.appendChild(th);});
+ thead.appendChild(tr);table.appendChild(thead);
+ var tbody=document.createElement("tbody"),limit=Math.min(cleaned.rows.length,100);
+ for(var r=0;r<limit;r++){var tr2=document.createElement("tr");for(var c=0;c<cleaned.header.length;c++){var td=document.createElement("td");td.textContent=cleaned.rows[r][c]===undefined?"":cleaned.rows[r][c];td.title=td.textContent;tr2.appendChild(td);}tbody.appendChild(tr2);}
+ table.appendChild(tbody);wrap.replaceChildren(table);
+ $("previewCount").textContent=cleaned.rows.length>100?"Showing first 100 of "+cleaned.rows.length+" cleaned rows. Export includes all rows.":cleaned.rows.length+" cleaned data rows shown.";
+ var removed=cleaned.removedBlank+cleaned.removedDuplicates,details=[];
+ if(cleaned.removedBlank)details.push(cleaned.removedBlank+" blank");
+ if(cleaned.removedDuplicates)details.push(cleaned.removedDuplicates+" duplicate");
+ $("status").className="status";
+ $("status").textContent="Loaded "+total+" data row"+(total===1?"":"s")+". "+(removed?("Removed "+details.join(" and ")+" row"+(removed===1?"":"s")+"."):"No rows removed by the selected rules.");
+}
+function load(){
+ var text=$("source").value;
+ if(!text.trim()){setError("Add or paste CSV data first.");return;}
+ try{
+  sepUsed=$("delimiter").value==="auto"?detectSeparator(text):$("delimiter").value;
+  parsed=parseCSV(text,sepUsed);
+  if(!parsed.length||!parsed[0].length)throw new Error("No CSV columns were found.");
+  transform();
+ }catch(err){cleaned=null;$("download").disabled=true;setError(err.message);}
+}
+function setError(message){$("status").className="status error";$("status").textContent=message;}
+$("load").addEventListener("click",load);
+$("sample").addEventListener("click",function(){$("source").value=sample;load();});
+$("clear").addEventListener("click",function(){$("source").value="";$("file").value="";parsed=null;cleaned=null;$("download").disabled=true;$("status").className="status";$("status").textContent="";$("delimiterBadge").textContent="No data loaded";$("statRows").textContent="—";$("statRemoved").textContent="—";$("statColumns").textContent="—";$("previewCount").textContent="Preview shows up to 100 rows.";$("tableWrap").innerHTML='<div class="empty">Paste some CSV or open a local file, then select <b>Load and clean</b>.</div>';});
+$("file").addEventListener("change",function(){var file=$("file").files[0];if(!file)return;var reader=new FileReader();reader.onload=function(){ $("source").value=String(reader.result||"").replace(/^\uFEFF/,"");load();};reader.onerror=function(){setError("Could not read this file. Try opening it as text or paste its contents.");};reader.readAsText(file);});
+["trim","blank","duplicates"].forEach(function(id){$(id).addEventListener("change",transform);});
+$("delimiter").addEventListener("change",function(){if(parsed){load();}});
+$("download").addEventListener("click",exportCSV);
+})();
+</script>
+</body>
+</html>
+
+
